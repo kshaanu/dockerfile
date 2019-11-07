@@ -1,0 +1,13 @@
+node('node') {
+    stage('git') {
+    git 'https://github.com/santhoshd402/gol-docker.git'
+    sh 'mvn clean package'
+    sh 'sudo apt-get install sshpass'
+    sh 'sshpass -p 'password' scp file.tar.gz root@xxx.xxx.xxx.194:/backup'
+}
+node('docker')
+    stage('docker') {
+    sh 'sh 'docker image build -t life:1.0 .'
+    sh 'docker container run --name life -d -p 8080:8080 life:1.0'
+    }
+}
